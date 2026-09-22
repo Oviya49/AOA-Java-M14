@@ -1,67 +1,68 @@
-# EX 4D Longest Common SubSequence - Dynamic Programming.
-## Date: 05.09.26
+## EX 4E Longest Increasing Subsequence - Dynamic Programming.
+## Date: 06.09.26
 ## AIM:
 To write a Java program to for given constraints.
-Given two strings text1 and text2, return the length of their longest common subsequence. If there is no common subsequence, return 0.
-A subsequence of a string is a new string generated from the original string with some characters (can be none) deleted without changing the relative order of the remaining characters.
-
-For example, "ace" is a subsequence of "abcde".
-A common subsequence of two strings is a subsequence that is common to both strings.
-
-Input: text1 = "abcde", text2 = "ace" 
-Output: 3  
-Explanation: The longest common subsequence is "ace" and its length is 3.
-Constraints:
-
-1 <= text1.length, text2.length <= 1000
-text1 and text2 consist of only lowercase English characters.
-
+Given an integer array nums, return the length of the longest strictly increasing subsequence.
+Example 1:
+Input: nums = [10,9,2,5,3,7,101,18]
+Output: 4
+Explanation: The longest increasing subsequence is [2,3,7,101], therefore the length is 4.
 ## Algorithm
-1. Input Reading: Read two strings text1 and text2 whose longest common subsequence needs to be found.
-2. Initialization: Create a 2D array dp[m+1][n+1], where m and n are lengths of the two strings. Each dp[i][j] will store the length of the LCS of the first i characters of text1 and first j characters of text2.
-3. Dynamic Programming Filling: Traverse both strings using nested loops. If text1[i-1] == text2[j-1], then dp[i][j] = dp[i-1][j-1] + 1. Otherwise, dp[i][j] = max(dp[i-1][j], dp[i][j-1]).
-4. Result Extraction: After filling the table, the value dp[m][n] represents the length of the longest common subsequence.
-5. Output: Print dp[m][n] as the length of the Longest Common Subsequence.
+1. Input Reading: Read the number of elements n and the array nums[] containing integers.
+2. Initialization: Create an array dp[] of size n and initialize all values to 1 (each element is an LIS of length 1 by itself).
+3. Dynamic Programming Update: For each element nums[i] (from index 1 to n-1), compare it with all previous elements nums[j] (where 0 ≤ j < i). If nums[i] > nums[j], then update dp[i] = max(dp[i], dp[j] + 1).
+4. Find Maximum Length: After filling the dp[] array, the length of the longest increasing subsequence is the maximum value in dp[].
+5. Output: Print the maximum LIS length as the final result.
+  
 
 ## Program:
-### Developed by: OVIYA N
+### Developed by: OVIYA N 
 ### Register Number:  212223040140
 
 ```
-import java.util.Scanner;
+import java.util.*;
 
-public class Solution {
-    public int longestCommonSubsequence(String text1, String text2) {
-        int m = text1.length();
-        int n = text2.length();
-        int[][] dp = new int[m + 1][n + 1];
-        for (int i = 1; i <= m; i++) {
-            for (int j = 1; j <= n; j++) {
-                if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
-                    dp[i][j] = dp[i - 1][j - 1] + 1;
-                } else {
-                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+public class LongestIncreasingSubsequence {
+
+    public static int lengthOfLIS(int[] nums) {
+        int[] dp=new int[nums.length];
+        Arrays.fill(dp,1);
+        for(int i=1;i<nums.length;i++){
+            for(int j=0;j<i;j++){
+                if(nums[i]>nums[j]){
+                    dp[i]=Math.max(dp[i],dp[j]+1);
                 }
             }
         }
-        return dp[m][n];
+        int longest=0;
+        for(int c:dp){
+            longest=Math.max(longest,c);
+        }
+        return longest;
     }
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        Solution sol = new Solution();
-        String text1 = sc.nextLine().replaceAll("\"", "");
-        String text2 = sc.nextLine().replaceAll("\"", "");
-        int lcsLength = sol.longestCommonSubsequence(text1, text2);
-        System.out.println("Length of Longest Common Subsequence: " + lcsLength);
-        sc.close();
+public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+      
+        int n = scanner.nextInt();
+        int[] nums = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            nums[i] = scanner.nextInt();
+        }
+
+        
+        int result = lengthOfLIS(nums);
+        System.out.println("Length of Longest Increasing Subsequence: " + result);
+
+        scanner.close();
     }
 }
 ```
 ## Output:
 
-<img width="1429" height="363" alt="image" src="https://github.com/user-attachments/assets/507de0f1-0f77-4c71-b422-7d00101582eb" />
-
+<img width="1316" height="269" alt="image" src="https://github.com/user-attachments/assets/1cc68949-ba50-4081-88bd-06f935da397e" />
 
 
 ## Result:
